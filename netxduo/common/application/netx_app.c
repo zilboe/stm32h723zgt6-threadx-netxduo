@@ -112,11 +112,11 @@ UINT MX_NetXDuo_Init(void)
 
 //#define	IPERF_BUFFER_SIZE	(4096)
 //static UCHAR test_buffer[IPERF_BUFFER_SIZE];
+NX_TCP_SOCKET tcp_socket;
 static void thread_tcp_entry(ULONG thread_input)
 {
 	#define	TCP_SERVER_PORT	(5001)
 	UINT status;
-	NX_TCP_SOCKET tcp_socket;
 	ULONG packet_size;
 	NX_PACKET *packet;
 #if NETX_TCP_USE_CLIENT
