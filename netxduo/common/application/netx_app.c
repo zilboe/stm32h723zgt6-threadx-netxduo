@@ -1,8 +1,5 @@
 #include "netx_app.h"
 
-#ifndef NETX_TCP_USE_CLIENT
-#define	NETX_TCP_USE_CLIENT	0
-#endif
 /* NET packet pool struct */
 static NX_PACKET_POOL    pool_0;
 
@@ -10,18 +7,18 @@ static NX_PACKET_POOL    pool_0;
 static NX_IP             ip_0;
 
 /* Net packet pool */
-#define NX_PACKET_POOL_SIZE ((1536 + sizeof(NX_PACKET)) * 48)
-static UCHAR  packet_pool_area[NX_PACKET_POOL_SIZE];// __attribute__((section(".RW_IRAM2")));
+#define NX_PACKET_POOL_SIZE ((1536 + sizeof(NX_PACKET)) * 32)
+static UCHAR  packet_pool_area[NX_PACKET_POOL_SIZE];// __attribute__((section(".NetXPoolSection")));
 
 /* Arp cache buffer */
 #define	NX_ARP_POOL_SIZE		(1024)
-static UCHAR  arp_space_area[NX_ARP_POOL_SIZE];// __attribute__((section(".RW_IRAM2")));
+static UCHAR  arp_space_area[NX_ARP_POOL_SIZE];// __attribute__((section(".NetXPoolSection")));
 
 /* Tcp WND size */
 #define	SOCKET_WND_SIZE			(32*1024)
 
 /* error count */
-static ULONG error_count=0;
+ULONG error_count=0;
 
 /* Defaule ip mask */
 #define IP_ADDR0	(192)
@@ -107,14 +104,14 @@ UINT MX_NetXDuo_Init(void)
 		TX_AUTO_START);
 
 
-	if(status != TX_SUCCESS)
-		return status;
+//	if(status != TX_SUCCESS)
+//		return status;
 	
 	return nx_init_status;
 }
 
-#define	IPERF_BUFFER_SIZE	(4096)
-static UCHAR test_buffer[IPERF_BUFFER_SIZE];
+//#define	IPERF_BUFFER_SIZE	(4096)
+//static UCHAR test_buffer[IPERF_BUFFER_SIZE];
 static void thread_tcp_entry(ULONG thread_input)
 {
 	#define	TCP_SERVER_PORT	(5001)
@@ -195,7 +192,7 @@ static void thread_tcp_entry(ULONG thread_input)
 		return;
 	}
 	
-	tx_thread_sleep(200);
+	tx_thread_sleep(2000);
 	
 	status =  nx_tcp_client_socket_bind(&tcp_socket, NX_ANY_PORT, NX_WAIT_FOREVER);
 	if(status != NX_SUCCESS)

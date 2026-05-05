@@ -66,6 +66,7 @@ extern "C" {
 /**
   * @brief  ETH DMA Descriptor structure definition
   */
+#
 typedef struct
 {
   __IO uint32_t DESC0;
